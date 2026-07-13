@@ -19,6 +19,7 @@ import MernStack from "./MernStack";
 import Contests from "./Contests";
 import Profile from "./Profile";
 import "./App.css";
+
 function About() {
   return (
     <div className="container" style={{ maxWidth: "800px", marginTop: "2rem" }}>
@@ -35,6 +36,7 @@ function About() {
     </div>
   );
 }
+
 function App() {
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("currentUser");
@@ -56,6 +58,7 @@ function App() {
   const [isBackendOnline, setIsBackendOnline] = useState(true);
   const [resourcesDropdownOpen, setResourcesDropdownOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+
   useEffect(() => {
     const loadSession = () => {
       const storedUser = localStorage.getItem("currentUser");
@@ -72,35 +75,43 @@ function App() {
         }
       }
     };
+
     window.addEventListener("userProfileUpdated", loadSession);
+
     checkBackendStatus().then((online) => {
       setIsBackendOnline(online);
     });
+
     // Check periodically
     const interval = setInterval(() => {
       checkBackendStatus().then((online) => {
         setIsBackendOnline(online);
       });
     }, 15000);
+
     return () => {
       clearInterval(interval);
       window.removeEventListener("userProfileUpdated", loadSession);
     };
   }, []);
+
   const handleLoginSuccess = (userData) => {
     setUser(userData);
     localStorage.setItem("currentUser", JSON.stringify(userData));
     localStorage.setItem("logged_in_user", typeof userData === "object" ? userData.name : userData);
   };
+
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem("currentUser");
     localStorage.removeItem("logged_in_user");
   };
+
   const openAuth = (tabName) => {
     setAuthTab(tabName);
     setIsAuthOpen(true);
   };
+
   const getNavLinkStyle = ({ isActive }) => ({
     color: isActive ? "var(--accent-indigo)" : "var(--text-secondary)",
     fontWeight: isActive ? "600" : "500",
@@ -111,6 +122,7 @@ function App() {
     textDecoration: "none",
     transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)"
   });
+
   return (
     <Router>
       <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
@@ -148,6 +160,7 @@ function App() {
                 position: "relative"
               }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  {/* Stacked overlapping premium bookmark ribbons */}
                   <path d="M19 5v14l-5-2.5-5 2.5V5c0-1.1.9-2 2-2h6c1.1 0 2 .9 2 2z" fill="#ffffff" fillOpacity="0.3" />
                   <path d="M15 7v14l-5-2.5-5 2.5V7c0-1.1.9-2 2-2h6c1.1 0 2 .9 2 2z" fill="#ffffff" />
                 </svg>
@@ -156,6 +169,7 @@ function App() {
                 BookMark <span style={{ color: "var(--accent-indigo)" }}>Manager</span>
               </span>
             </Link>
+
             {/* Middle Nav Items */}
             <nav style={{ display: "flex", alignItems: "center" }}>
               {!user ? (
@@ -218,6 +232,7 @@ function App() {
                     >
                       Resources <span style={{ fontSize: "0.65rem", marginLeft: "2px", opacity: 0.8 }}>▼</span>
                     </NavLink>
+
                     {resourcesDropdownOpen && (
                       <div style={{
                         position: "absolute",
@@ -252,6 +267,7 @@ function App() {
                 </ul>
               )}
             </nav>
+
             {/* Right Buttons / Session User Profile */}
             <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
               {!user ? (
@@ -334,6 +350,7 @@ function App() {
                     <span style={{ fontSize: "0.9rem", fontWeight: "600", color: "var(--text-secondary)" }}>
                       {typeof user === "object" ? user.name : user}
                     </span>
+
                     {/* Absolute Dropdown Popover */}
                     {profileDropdownOpen && (
                       <div style={{
@@ -412,6 +429,7 @@ function App() {
             </div>
           </div>
         </header>
+
         {/* Offline Status Warning Banner */}
         {!isBackendOnline && (
           <div style={{
@@ -431,6 +449,7 @@ function App() {
             <span><strong>Offline Mode:</strong> Connection to backend server ({BACKEND_URL}) failed. Changes will save in your browser.</span>
           </div>
         )}
+
         {/* Main Content Pane */}
         <main style={{ flex: 1, backgroundColor: "var(--bg-primary)" }}>
           <Routes>
@@ -454,6 +473,7 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
+
         {/* Footer */}
         <footer style={{
           backgroundColor: "#ffffff",
@@ -467,6 +487,7 @@ function App() {
             &copy; {new Date().getFullYear()} Bookmark Manager. All rights reserved.
           </div>
         </footer>
+
         {/* Auth Modal Overlay */}
         <AuthModal 
           isOpen={isAuthOpen} 
@@ -478,4 +499,5 @@ function App() {
     </Router>
   );
 }
+
 export default App;

@@ -1,0 +1,27 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background-color: #fafafa;
+  color: #333;
+}
+
+/* Premium Resources Navigation Dropdown Styles */
+.nav-dropdown-item {
+  padding: 0.6rem 1.25rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+.nav-dropdown-item:hover {
+  background-color: #f8fafc;
+  color: var(--accent-indigo);
+  padding-left: 1.5rem; /* micro-interaction shift */
+}
+.nav-dropdown-item.active {
+  background-color: rgba(99, 102, 241, 0.08);
+  color: var(--accent-indigo);
+  font-weight: 600;
+}

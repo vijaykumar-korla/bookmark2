@@ -10,7 +10,7 @@ import Tutorials from "./Tutorials";
 import Tests from "./Tests";
 import Favorites from "./Favorites";
 import AuthModal from "./AuthModal";
-import { checkBackendStatus } from "./api";
+import { checkBackendStatus, BACKEND_URL } from "./api";
 import Dashboard from "./Dashboard";
 import Development from "./Development";
 import AiTools from "./AiTools";
@@ -38,7 +38,21 @@ function About() {
 }
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("currentUser");
+    if (storedUser) {
+      try {
+        return JSON.parse(storedUser);
+      } catch (e) {
+        return { name: storedUser, email: storedUser, id: "fallback" };
+      }
+    }
+    const loggedUser = localStorage.getItem("logged_in_user");
+    if (loggedUser) {
+      return { name: loggedUser, email: loggedUser, id: "fallback" };
+    }
+    return null;
+  });
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [authTab, setAuthTab] = useState("login");
   const [isBackendOnline, setIsBackendOnline] = useState(true);
@@ -61,8 +75,6 @@ function App() {
         }
       }
     };
-
-    loadSession();
 
     window.addEventListener("userProfileUpdated", loadSession);
 
@@ -148,7 +160,6 @@ function App() {
                 position: "relative"
               }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  {/* Stacked overlapping premium bookmark ribbons */}
                   <path d="M19 5v14l-5-2.5-5 2.5V5c0-1.1.9-2 2-2h6c1.1 0 2 .9 2 2z" fill="#ffffff" fillOpacity="0.3" />
                   <path d="M15 7v14l-5-2.5-5 2.5V7c0-1.1.9-2 2-2h6c1.1 0 2 .9 2 2z" fill="#ffffff" />
                 </svg>
@@ -434,7 +445,7 @@ function App() {
             gap: "0.5rem"
           }}>
             <span>⚠️</span>
-            <span><strong>Offline Mode:</strong> Connection to backend server (http://localhost:5000) failed. Changes will save in your browser.</span>
+            <span><strong>Offline Mode:</strong> Connection to backend server ({BACKEND_URL}) failed. Changes will save in your browser.</span>
           </div>
         )}
 

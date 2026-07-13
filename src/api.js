@@ -3,13 +3,16 @@ const BACKEND_URL = isProduction
   ? "https://bookmark3-1gnr.onrender.com"
   : "http://127.0.0.1:5000";
 const API_BASE = `${BACKEND_URL}/api`;
+
+let isBackendOffline = false;
+
 // Quick health check to see if backend is running
 export const checkBackendStatus = async () => {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000);
     
-    const res = await fetch("http://127.0.0.1:5000/", { 
+    const res = await fetch(`${BACKEND_URL}/`, { 
       method: "GET",
       signal: controller.signal 
     });

@@ -1,5 +1,5 @@
 const isProduction = import.meta.env.PROD;
-const BACKEND_URL = isProduction 
+export const BACKEND_URL = isProduction 
   ? "https://bookmark3-1gnr.onrender.com"
   : "http://127.0.0.1:5000";
 const API_BASE = `${BACKEND_URL}/api`;
@@ -217,8 +217,6 @@ export const deleteBookmark = async (id, userId) => {
   }
 
   // Delete from Express Server
-  // Note: Local storage IDs are numeric timestamps, database IDs are MongoDB ObjectIds.
-  // We try fetching or handle error gracefully.
   const res = await fetch(`${API_BASE}/bookmarks/${id}`, {
     method: "DELETE",
     headers: getHeaders(userId)

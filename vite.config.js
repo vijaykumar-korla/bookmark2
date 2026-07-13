@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
+// https://vite.dev
 export default defineConfig({
-  // Dynamically switches the base path depending on the deployment platform
-  base: process.env.VERCEL ? '/' : '/bookmark2/',
+  // Automatically sets the subfolder path on GitHub Pages production builds
+  base: './',
   plugins: [react()],
 })

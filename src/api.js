@@ -1,7 +1,8 @@
-const API_BASE = "http://127.0.0.1:5000/api";
-
-let isBackendOffline = false;
-
+const isProduction = import.meta.env.PROD;
+const BACKEND_URL = isProduction 
+  ? "https://bookmark3-1gnr.onrender.com"
+  : "http://127.0.0.1:5000";
+const API_BASE = `${BACKEND_URL}/api`;
 // Quick health check to see if backend is running
 export const checkBackendStatus = async () => {
   try {

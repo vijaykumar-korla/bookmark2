@@ -14,7 +14,10 @@ jobs:
       - uses: actions/setup-node@v4
         with: {node-version: lts/*, cache: 'npm'}
       - run: npm ci
+      # This line injects an environment variable so Vite configures your file paths flawlessly
       - run: npm run build
+        env:
+          GITHUB_PAGES: true
       - uses: actions/upload-pages-artifact@v3
         with: {path: './dist'}
       - id: deployment

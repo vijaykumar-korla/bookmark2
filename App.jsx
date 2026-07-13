@@ -38,7 +38,21 @@ function About() {
 }
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("currentUser");
+    if (storedUser) {
+      try {
+        return JSON.parse(storedUser);
+      } catch (e) {
+        return { name: storedUser, email: storedUser, id: "fallback" };
+      }
+    }
+    const loggedUser = localStorage.getItem("logged_in_user");
+    if (loggedUser) {
+      return { name: loggedUser, email: loggedUser, id: "fallback" };
+    }
+    return null;
+  });
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [authTab, setAuthTab] = useState("login");
   const [isBackendOnline, setIsBackendOnline] = useState(true);
@@ -61,8 +75,6 @@ function App() {
         }
       }
     };
-
-    loadSession();
 
     window.addEventListener("userProfileUpdated", loadSession);
 
